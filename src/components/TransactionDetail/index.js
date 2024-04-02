@@ -7,7 +7,7 @@ const TransactionDetail = ({ route }) => {
   const { transaction } = route.params;
 
   const formatDate = (dateString) => {
-    const date = new Date(`${dateString}T00:00:00`);
+    const date = new Date(`${dateString}`);
     const options = { 
       year: 'numeric', 
       month: 'short', 
@@ -21,7 +21,7 @@ const TransactionDetail = ({ route }) => {
       <Text style={styles.description}>{transaction.name}</Text>
       <Text style={styles.amount}>${transaction.amount.toFixed(2)}</Text>
       <Text style={styles.location }>{transaction.location}</Text>
-      <Text style={styles.date}>{formatDate(transaction.date)}</Text>
+      <Text style={styles.date}>{formatDate(transaction.date.toDate())}</Text>
     </View>
   )
  }

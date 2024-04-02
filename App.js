@@ -9,19 +9,40 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import Transactions from './src/components/Transactions';
 import Summary from './src/components/Summary';
 import styles from './src/styles/main';
-import transactionsData from './src/data/transactions.json';
+import AppLoader from './src/components/AppLoader';
 
 const Tab = createBottomTabNavigator();
 
 export default function App() {
 
   const [transactions, setTransactions] = useState([]);
+  const [showErrorMessage, setShowErrorMessage] = useState(false);
+  const [loadingData, setLoadingData] = useState(true);
 
-  useEffect(() => {
-    setTransactions(transactionsData);
-  }, []);
+  const handleSetLoadingData = (isLoading) => {
+    setLoadingData(isLoading)
+  }
+
+  const handleShowErrorMessage = (show) => {
+    setShowErrorMessage(show)
+  }
+
+  const handleLoadTransactions = (data) => {
+    setTransactions(data);
+  }
+
+  const handleAddTransaction = (data) => {
+    const updatedTransactions = [...transactions, data];
+    setTasks(updatedTransactions);
+  }
 
   return (
+    <>
+     <AppLoader
+        handleLoadTransactions={handleLoadTransactions}
+        handleShowErrorMessage={handleShowErrorMessage}
+        handleSetLoadingData={handleSetLoadingData}
+      />
     <View style={styles.container}>
       <StatusBar style="light" />
       <NavigationContainer >
@@ -90,5 +111,6 @@ export default function App() {
         </Tab.Navigator>
       </NavigationContainer>
     </View>
+    </>
   );
 }

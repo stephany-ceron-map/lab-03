@@ -3,18 +3,11 @@ import { View, Text, Pressable } from 'react-native';
 import styles from './styles';
 
 const TransactionsList = ({ navigation, transactions }) => {
-
-  const sortByDate = (a, b) => {
-    return new Date(b.date) - new Date(a.date);
-  };
-
-  const sortedTransactions = transactions.sort(sortByDate);
-
+  
   const groupByDate = () => {
     const grouped = {};
-
-    sortedTransactions.forEach(transaction => {
-      const date = transaction.date;
+    transactions.forEach(transaction => {
+    const date = transaction.date.toDate();
       if (!grouped[date]) {
         grouped[date] = [];
       }
@@ -25,7 +18,7 @@ const TransactionsList = ({ navigation, transactions }) => {
   };
 
   const formatDate = (dateString) => {
-    const date = new Date(`${dateString}T00:00:00`);
+    const date = new Date(`${dateString}`);
     const options = {
       year: 'numeric',
       month: 'short',

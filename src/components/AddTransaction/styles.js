@@ -29,6 +29,9 @@ export default StyleSheet.create({
     pressed: {
       backgroundColor: blue_400
     },
+    disabled: {
+      backgroundColor: gray_200
+    },
     marginVertical: 16,
     backgroundColor: primaryColor,
     borderRadius: 20,

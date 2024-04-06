@@ -1,6 +1,6 @@
 import { Text, View, TextInput, Pressable, Keyboard, ActivityIndicator } from 'react-native';
 import styles from './styles';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import * as database from "../../database";
 import { gray_200 } from '../../../includes/variables';
 
@@ -11,6 +11,19 @@ const AddTransaction = ({navigation, onAddTransaction}) => {
   const [location, setLocation] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [savingData, setSavingData] = useState(false);
+  const [isSaveDisabled, setIsSaveDisabled] = useState(true);
+
+  const validateFields = () => {
+    const validAmount = parseFloat(amount.replace(/\D/g, '')) / 100 > 0; 
+    const validDescription = description.trim() !== ''; 
+    const validLocation = location.trim() !== ''; 
+  
+    return validAmount && validDescription && validLocation;
+  };
+
+  useEffect(() => {
+    setIsSaveDisabled(!validateFields());
+  }, [description, amount, location]);
 
   const { format: formatCurrency } = Intl.NumberFormat('en-CA', {
     currency: 'CAD',
@@ -85,8 +98,12 @@ const AddTransaction = ({navigation, onAddTransaction}) => {
 
       <Pressable
         onPress={handleAddPress}
-        style={({ pressed }) => [styles.button, pressed ? styles.button.pressed : styles.button]}>
-
+        style={({ pressed }) => [
+          styles.button, 
+          pressed ? styles.button.pressed : styles.button,
+          isSaveDisabled ? styles.button.disabled : null
+        ]}
+        disabled={isSaveDisabled}>
         <Text
           style={styles.button.text}>
           Save

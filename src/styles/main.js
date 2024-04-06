@@ -7,4 +7,16 @@ export default StyleSheet.create({
     flexDirection: 'column',
     backgroundColor: primaryColor
   },
+  loadingContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#F6F6F6'
+  },
+  loadingText: {
+    color: primaryColor,
+    fontWeight: 'bold',
+    fontSize: 16,
+    marginTop: 10
+  }
 });

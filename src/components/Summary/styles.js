@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { blue_400, gray_50, primaryColor, white } from "../../../includes/variables";
+import { blue_400, gray_50, primaryColor, white , gray_900} from "../../../includes/variables";
 
 export default StyleSheet.create({
   container: {
@@ -27,5 +27,20 @@ export default StyleSheet.create({
     fontWeight: '700',
     color: blue_400,
     marginBottom: 4
+  },
+  errorContainer: {
+    backgroundColor: '#FFCECE',
+    borderRadius: 6,
+    padding: 12,
+    margin: 12,
+    title: {
+      color: gray_900,
+      fontWeight: 'bold',
+      fontSize: 18
+    },
+    description: {
+      color: gray_900,
+      fontSize: 16
+    }
   }
 })

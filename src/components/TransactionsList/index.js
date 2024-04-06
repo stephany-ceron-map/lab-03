@@ -1,13 +1,22 @@
 import React from 'react';
-import { View, Text, Pressable } from 'react-native';
+import { View, Text, Pressable, ScrollView } from 'react-native';
 import styles from './styles';
 
-const TransactionsList = ({ navigation, transactions }) => {
+const TransactionsList = ({ navigation, transactions, showErrorMessage }) => {
   
   const groupByDate = () => {
     const grouped = {};
     transactions.forEach(transaction => {
-    const date = transaction.date.toDate();
+      let date = transaction.date.toDate();
+
+      const options = {
+        year: 'numeric',
+        month: 'short',
+        day: '2-digit'
+      };
+
+      date = date.toLocaleDateString('en-CA', options);
+
       if (!grouped[date]) {
         grouped[date] = [];
       }
@@ -17,40 +26,39 @@ const TransactionsList = ({ navigation, transactions }) => {
     return grouped;
   };
 
-  const formatDate = (dateString) => {
-    const date = new Date(`${dateString}`);
-    const options = {
-      year: 'numeric',
-      month: 'short',
-      day: '2-digit'
-    };
-    return date.toLocaleDateString('en-CA', options);
-  };
-
   const groupedTransactions = groupByDate();
 
   return (
-    <View>
-      {Object.keys(groupedTransactions).map(date => (
-        <View key={date} >
-          <Text style={styles.dateHeader}>{formatDate(date)}</Text>
-          <View style={styles.container}>
-            {groupedTransactions[date].map(transaction => (
-              <Pressable
-                key={transaction.id}
-                style={styles.item}
-                onPress={() => navigation.navigate('Detail', { transaction })}
-              >
-                <Text style={styles.label}>{transaction.name}</Text>
-                <Text style={styles.amount}>${transaction.amount.toFixed(2)}</Text>
-              </Pressable>
-            ))}
-          </View>
+    <>
+      {showErrorMessage && (
+        <View style={styles.errorContainer}>
+          <Text style={styles.errorContainer.title}>Attention</Text>
+          <Text style={styles.errorContainer.description}>There was an error loading the data</Text>
         </View>
-      ))
-      }
-    </View>
-
+      )}
+      {transactions && (
+        <ScrollView>
+          {Object.keys(groupedTransactions).map(date => (
+            <View key={date} >
+              <Text style={styles.dateHeader}>{date}</Text>
+              <View style={styles.container}>
+                {groupedTransactions[date].map(transaction => (
+                  <Pressable
+                    key={transaction.id}
+                    style={styles.item}
+                    onPress={() => navigation.navigate('Detail', { transaction })}
+                  >
+                    <Text style={styles.label}>{transaction.name}</Text>
+                    <Text style={styles.amount}>${transaction.amount.toFixed(2)}</Text>
+                  </Pressable>
+                ))}
+              </View>
+            </View>
+          ))
+          }
+        </ScrollView>
+      )}
+    </>
   );
 }
 

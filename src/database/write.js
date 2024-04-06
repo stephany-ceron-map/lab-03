@@ -6,7 +6,7 @@ export async function save(data) {
     data.date = Timestamp.fromDate(new Date())
     const dbCollection = collection(db, 'transactions');
     const docRef = await addDoc(dbCollection, data);
-    return docRef.id
+    return {...data , id: docRef.id}
   }
   catch (e) {
     console.error("Error adding document: ", e);
